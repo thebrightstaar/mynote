@@ -15,15 +15,32 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {   return $request->user();  });
-
+//register and login
     Route::post('register', 'API\AuthController@register');
     Route::post('login', 'API\AuthController@login');
 
 
 
+
 Route::middleware('auth:api')->group( function (){
+//profile
+    Route::get('/profile', 'API\ProfileController@index');
+    Route::get('/profile/update', 'API\ProfileController@update');
+//notes
+
     Route::resource('notes', 'API\NotesController');
-   
+/*
+//tasks
 
+    Route::resource('tasks', 'API\ToDoListController');
 
+//brithday
+   // Route::resource('brithdays', 'API\brithdayController');
+//event
+   // Route::resource('events', 'API\eventController');
+
+    //Tag
+    Route::resource('tag', 'API\TagController');
+    //notebook
+    Route::resource('notebook', 'API\NoteBookController');*/
 });

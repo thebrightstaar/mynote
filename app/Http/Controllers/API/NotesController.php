@@ -15,8 +15,8 @@ class NotesController extends BaseController
         public function index()
     { $id = Auth::id();
 
-     $notes = Notes::where('user_id' , $id)->get();
-    return $this->sendResponse(NotesResource::collection($notes), 'Notes retrieved Successfully!' );
+     $notes = Notes::where('user_id' , $id)->orderBy('prioity' ,'DESC')->get();
+    return $this->sendResponse(NotesResource::collection($notes), 'Notes retrieved Successfully' );
     
     
     }
@@ -33,14 +33,16 @@ public function store(Request $request)
             
 
         ]);
+
         if ($validator->fails()) {
             return $this->sendError('Validate Error',$validator->errors() );
         }
 
         $user = Auth::user();
         $input['user_id'] = $user->id;
+       
         $note = Notes::create($input);
-        return $this->sendResponse($note, 'Note added Successfully!' );
+        return $this->sendResponse($note, 'Note added Successfully' );
 
     }
 
@@ -51,10 +53,11 @@ public function store(Request $request)
     {
         //لارجاع معلومات ملاحظة واحدة معينة
          $note = Notes::find($id);
+        
         if (is_null($note)) {
             return $this->sendError('Note not found!' );
         }
-        return $this->sendResponse(new NotesResource($note), 'Note retireved Successfully!' );
+        return $this->sendResponse(new NotesResource($note), 'Note retireved Successfully' );
 
     }
 
@@ -67,7 +70,7 @@ public function store(Request $request)
         $validator = Validator::make($input,[
             'title'   =>'required',
             'content' =>'required',
-            'prioity' =>'required',
+            'prioity' =>'required'
             
          ]);
         if ($validator->fails()) {
@@ -76,9 +79,10 @@ public function store(Request $request)
         $note->title   = $input['title'];
         $note->content = $input['content'];
         $note->prioity = $input['prioity'];
+       
         $note->save();
 
-        return $this->sendResponse( new NotesResource($note), 'Note updated Successfully!' );
+        return $this->sendResponse( new NotesResource($note), 'Note updated Successfully' );
 
     }
 
@@ -89,7 +93,7 @@ public function store(Request $request)
         //لحذف ملاحظة معينة
 
         $note->delete();
-        return $this->sendResponse(new NotesResource($note), 'Note deleted Successfully!' );
+        return $this->sendResponse(new NotesResource($note), 'Note deleted Successfully' );
 
     }
 }

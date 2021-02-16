@@ -18,5 +18,16 @@ class Notes extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User' );
+
+    }
+
+    public function getFeaturedAttribute($photo)
+     {
+         return asset($photo);
+     }
+     public function tag()
+    {
+        return $this->belongsToMany('App\Models\Notes' );
     }
 }
+
